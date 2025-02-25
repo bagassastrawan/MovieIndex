@@ -12,7 +12,7 @@ const TopMovie = ({ data }) => {
                     <div
                         key={index}
                         className="w-40 flex-shrink-0 border border-white rounded-lg p-2 cursor-pointer hover:scale-105 transition-transform duration-300"
-                        onClick={() => navigate(`/detail/${item.id}`)}
+                        onClick={() => navigate(`/movie/${item.id}`)}
                     >
                         <img
                             src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}

@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App"
+import MovieDetails from "../components/MovieDetails";
 
 const router = createBrowserRouter({
     Path: "/",
@@ -15,7 +16,7 @@ const router = createBrowserRouter({
         },
         {
             path: "movie/:id",
-            element: <DetailsPage />
+            element: <MovieDetails />
         }
     ]
 })

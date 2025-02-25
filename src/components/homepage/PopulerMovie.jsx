@@ -12,7 +12,8 @@ const PopulerMovie = ({ data }) => {
                     <div
                         key={index}
                         className="w-40 flex-shrink-0 border border-white rounded-lg p-2 cursor-pointer hover:scale-105 transition-transform duration-300"
-                        onClick={() => navigate(`/detail/${movie.id}`)}
+                        onClick={() => navigate(`/movie/${movie.id}`)}
+
                     >
                         <img
                             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}

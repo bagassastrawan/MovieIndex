@@ -8,39 +8,41 @@ const Home = () => {
     const [topMovie, setTopMovie] = useState([]);
     const [popularMovie, setPopularMovie] = useState([]);
     const [upcomingMovie, setUpcomingMovie] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function fetchTopMovies() {
-            const data = await fetchData({
-                url: 'movie/top_rated?language=en-US&page=1'
-            });
-            setTopMovie(data);
-        }
+        const fetchMovies = async () => {
+            try {
+                setLoading(true);
 
-        async function fetchPopularMovies() {
-            const data = await fetchData({
-                url: 'movie/popular?language=en-US&page=1'
-            });
-            setPopularMovie(data);
-        }
+                const [topData, popularData, upcomingData] = await Promise.all([
+                    fetchData({ url: 'movie/top_rated?language=en-US&page=1' }),
+                    fetchData({ url: 'movie/popular?language=en-US&page=1' }),
+                    fetchData({ url: 'movie/upcoming?language=en-US&page=1' })
+                ]);
 
-        async function fetchUpcomingMovies() {
-            const data = await fetchData({
-                url: 'movie/upcoming?language=en-US&page=1'
-            });
-            setUpcomingMovie(data);
-        }
+                setTopMovie(topData?.results || []);
+                setPopularMovie(popularData?.results || []);
+                setUpcomingMovie(upcomingData?.results || []);
+            } catch (err) {
+                setError('Failed to fetch movies. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        fetchTopMovies();
-        fetchPopularMovies();
-        fetchUpcomingMovies();
+        fetchMovies();
     }, []);
+
+    if (loading) return <p className="text-center text-white">Loading...</p>;
+    if (error) return <p className="text-center text-red-500">{error}</p>;
 
     return (
         <div>
-            <TopMovie data={topMovie?.results} />
-            <PopulerMovie data={popularMovie?.results} />
-            <UpcomingMovie data={upcomingMovie?.results} />
+            <TopMovie data={topMovie} />
+            <PopulerMovie data={popularMovie} />
+            <UpcomingMovie data={upcomingMovie} />
         </div>
     );
 };
